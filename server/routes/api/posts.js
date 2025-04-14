@@ -1,5 +1,3 @@
-console.log('🔍 MONGO_URI:', process.env.MONGO_URI); // test log
-
 const express = require('express');
 const mongodb = require('mongodb');
 
@@ -24,10 +22,10 @@ router.post('/', async (req, res) => {
 
 //Delete Posts 
 router.delete('/:id', async (req, res) => {
-    const posts = await loadPostsCollection(); 
-    await posts.deleteOne({_id: new mongodb.ObjectId(req.params.id)}); 
+    const posts = await loadPostsCollection();
+    await posts.deleteOne({ _id: new mongodb.ObjectId(req.params.id) });
     res.status(200).send();
-}); 
+});
 
 async function loadPostsCollection() {
     const mongoUri = process.env.MONGO_URI;
@@ -35,7 +33,7 @@ async function loadPostsCollection() {
         useNewUrlParser: true,
         useUnifiedTopology: true,
     });
-    return client.db('vue-express').collection('posts')
+    return client.db('vue-express').collection('posts');
 }
 
 
