@@ -3,22 +3,22 @@ import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 
 export default defineConfig({
-  root: '.',                // treat frontend/ as the project root
+  root: '.',                // this is your frontend/ folder, since you cd into it
   plugins: [vue()],
   build: {
-    outDir: '../dist',      // wherever you want to drop the built files
+    outDir: '../dist',      // this writes to projectRoot/dist
     emptyOutDir: true,
     rollupOptions: {
-      // anything outside ./frontend will be left alone
       external: [
-        '../backend/*'
+        // anything that starts with ../backend/
+        /^\.\.\/backend\//
       ]
     }
   },
   optimizeDeps: {
-    // don’t even try to pre‑bundle your backend
     exclude: [
-      '../backend/*'
+      // if you ever pre‑bundle deps, ignore your backend folder
+      /^\.\.\/backend\//
     ]
   }
 })

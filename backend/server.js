@@ -24,13 +24,13 @@ app.use('/api/topics', topicsRouter);
 // ─── Serve Frontend in Production ───────────────────────────────────────────────
 const __filename = fileURLToPath(import.meta.url);
 const __dirname  = path.dirname(__filename);
-const distPath   = path.join(__dirname, '../frontend/dist');
+const distPath   = path.join(__dirname, '../dist');
 
 // Serve static files from the Vue build
 app.use(express.static(distPath));
 
 // All other GET requests should return our Vue app
-app.get('*', (req, res) => {
+app.get(/.*/, (req, res) => {
   res.sendFile(path.join(distPath, 'index.html'));
 });
 
