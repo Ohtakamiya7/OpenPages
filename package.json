@@ -9,6 +9,10 @@
     "heroku-postbuild":"cd frontend && npm ci && npm run build"
   },
   "main": "index.js",
+  "engines": {
+        "node": "18.x",
+        "npm":  "8.x"
+    },
   "dependencies": {
     "-": "^0.0.1",
     "axios": "^1.8.4",
