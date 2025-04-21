@@ -64,7 +64,6 @@
 
 <script setup>
 import { ref, onMounted, defineEmits } from "vue";
-import Entry from "../../backend/models/Entry";
 
 const prompt = ref("");
 const date = ref(new Date().toLocaleDateString());
