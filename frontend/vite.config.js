@@ -11,14 +11,14 @@ export default defineConfig({
     rollupOptions: {
       // anything outside ./frontend will be left alone
       external: [
-        '../backend/**'
+        '../backend/*'
       ]
     }
   },
   optimizeDeps: {
     // don’t even try to pre‑bundle your backend
     exclude: [
-      '../backend/**'
+      '../backend/*'
     ]
   }
 })
