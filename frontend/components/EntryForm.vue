@@ -50,7 +50,14 @@
     </div>
 
     <div class="bottom-right">
-      <button type="button" @click="onCancel" style="background-color: lightblue" class = "btn btn-lg">Cancel</button>
+      <button
+        type="button"
+        @click="onCancel"
+        style="background-color: lightblue"
+        class="btn btn-lg"
+      >
+        Cancel
+      </button>
       <button type="submit" class="btn btn-primary submit-btn btn-lg">
         {{ props.initialEntry._id ? "Save Changes" : "Post Entry!" }}
       </button>
@@ -60,7 +67,6 @@
 
 <script setup>
 import { ref, watch, onMounted } from "vue";
-
 
 const props = defineProps({
   initialEntry: {
@@ -73,11 +79,10 @@ const props = defineProps({
       win: "",
       mood: "",
     }),
-
-    topicOrder: {
-      type: Number, 
-      required: true
-    }
+  },
+  topicOrder: {
+    type: Number,
+    required: true,
   },
 });
 const emit = defineEmits(["submitted", "cancelled"]);
@@ -117,20 +122,24 @@ function onCancel() {
 }
 
 async function submitEntry() {
-  const payload = { author, text: entryText, grateful, win, mood };
-  const method  = props.initialEntry._id ? 'PUT' : 'POST';
-  const url     = `/api/entries/${props.topicOrder}`;
+  const payload = {
+    author: author.value,
+    text: entryText.value,
+    grateful: grateful.value,
+    win: win.value,
+    mood: mood.value,
+  };
+  const method = props.initialEntry._id ? "PUT" : "POST";
+  const url = `/api/entries/${props.topicOrder}`;
 
   console.log("POSTing entry to", `/api/entries/${props.topicOrder}`, payload);
 
-  const res = await fetch(url, {  
+  const res = await fetch(url, {
     method,
-    headers: { 'Content-Type': 'application/json' },
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify(
-      method === 'PUT'
-        ? { ...payload, id: props.initialEntry._id }
-        : payload
-    )
+      method === "PUT" ? { ...payload, id: props.initialEntry._id } : payload
+    ),
   });
 
   if (!res.ok) {
@@ -138,6 +147,6 @@ async function submitEntry() {
     throw new Error(err.error || res.statusText);
   }
   const saved = await res.json();
-  emit('submitted', saved);
+  emit("submitted", saved);
 }
 </script>
