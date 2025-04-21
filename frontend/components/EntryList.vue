@@ -71,7 +71,7 @@ function editEntry() {
 async function saveEdit(editedPayload) {
 
   const res = await fetch(
-    `http://localhost:5000/api/entries/${props.topicOrder}`,
+    `/api/entries/${props.topicOrder}`,
     {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
@@ -111,7 +111,7 @@ async function deleteEntry(id) {
   if (!confirm("Delete this entry? Please only delete your entries! ")) return;
 
   const res = await fetch(
-    `http://localhost:5000/api/entries/${props.topicOrder}`,
+    `/api/entries/${props.topicOrder}`,
     {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },

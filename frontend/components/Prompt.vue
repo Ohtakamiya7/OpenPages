@@ -45,8 +45,8 @@ const topicOrder = ref("");
 const entriesArray = ref([]);
 
 function handleSubmitted() {
-  load();
   showDrawer.value = false;
+  load();
 }
 
 function closeDrawer() {
@@ -54,13 +54,13 @@ function closeDrawer() {
 }
 
 async function load() {
-  const res = await fetch("http://localhost:5000/api/topics/today");
+  const res = await fetch("/api/topics/today");
   const data = await res.json();
   prompt.value = data.prompt;
   topicOrder.value = data.order;
 
   const res2 = await fetch(
-    `http://localhost:5000/api/entries/${topicOrder.value}`
+    `/api/entries/${topicOrder.value}`
   );
   entriesArray.value = await res2.json();
 

@@ -98,7 +98,7 @@ function startEditing() {
 
 onMounted(async () => {
   try {
-    const res = await fetch("http://localhost:5000/api/topics");
+    const res = await fetch("/api/topics");
     const topics = await res.json();
     // find the one with the matching orderNumber
     const topic = topics.find((t) => t.order === props.entry.topicOrder);

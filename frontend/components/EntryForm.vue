@@ -99,7 +99,7 @@ watch(
 
 onMounted(async () => {
   try {
-    const res = await fetch("http://localhost:5000/api/topics/today");
+    const res = await fetch("/api/topics/today");
     const body = await res.json();
     prompt.value = body.prompt;
   } catch {
@@ -111,15 +111,37 @@ function onCancel() {
   emit("cancelled");
 }
 
-function submitEntry() {
+async function submitEntry() {
   const payload = {
-    _id: props.initialEntry._id,
-    author: author.value,
-    text: entryText.value,
+    author:   author.value,
+    text:     entryText.value,
     grateful: grateful.value,
-    win: win.value,
-    mood: mood.value,
+    win:      win.value,
+    mood:     mood.value
   };
-  emit("submitted", payload);
+
+  // decide POST vs PUT
+  const method = props.initialEntry._id ? "PUT" : "POST";
+  const url    = `/api/entries/${props.topicOrder}`;
+
+  try {
+    const res = await fetch(url, {
+      method,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(
+        method === "PUT"
+          ? { ...payload, id: props.initialEntry._id }
+          : payload
+      )
+    });
+    if (!res.ok) throw await res.json();
+    const saved = await res.json();
+
+    // tell parent “here’s the new/updated entry”
+    emit("submitted", saved);
+  } catch (err) {
+    console.error(err);
+    alert(err.error || "Failed to save entry");
+  }
 }
 </script>
