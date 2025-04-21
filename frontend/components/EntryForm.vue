@@ -77,7 +77,6 @@ const props = defineProps({
     topicOrder: {
       type: Number, 
       required: true
-
     }
   },
 });
@@ -118,36 +117,25 @@ function onCancel() {
 }
 
 async function submitEntry() {
-  const payload = {
-    author:   author.value,
-    text:     entryText.value,
-    grateful: grateful.value,
-    win:      win.value,
-    mood:     mood.value
-  };
+  const payload = { author, text: entryText, grateful, win, mood };
+  const method  = props.initialEntry._id ? 'PUT' : 'POST';
+  const url     = `/api/entries/${props.topicOrder}`;
 
-  // decide POST vs PUT
-  const method = props.initialEntry._id ? "PUT" : "POST";
-  const url    = `/api/entries/${props.topicOrder}`;
+  const res = await fetch(url, {  
+    method,
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(
+      method === 'PUT'
+        ? { ...payload, id: props.initialEntry._id }
+        : payload
+    )
+  });
 
-  try {
-    const res = await fetch(url, {
-      method,
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(
-        method === "PUT"
-          ? { ...payload, id: props.initialEntry._id }
-          : payload
-      )
-    });
-    if (!res.ok) throw await res.json();
-    const saved = await res.json();
-
-    // tell parent “here’s the new/updated entry”
-    emit("submitted", saved);
-  } catch (err) {
-    console.error(err);
-    alert(err.error || "Failed to save entry");
+  if (!res.ok) {
+    const err = await res.json();
+    throw new Error(err.error || res.statusText);
   }
+  const saved = await res.json();
+  emit('submitted', saved);
 }
 </script>
