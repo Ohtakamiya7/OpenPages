@@ -2,23 +2,31 @@
   "name": "fullstack_vue_express",
   "version": "1.0.0",
   "description": "Full stack vue and express app ",
-  "main": "index.js",
-  "scripts": {
-    "start": "node server/index.js",
-    "dev": "nodemon server/index.js"
-  },
   "author": "Ohta Kamiya",
-  "license": "MIT",
+  "scripts": {
+    "dev": "nodemon server/index.js",
+    "start": "node server/index.js", 
+    "heroku-postbuild":
+  },
+  "main": "index.js",
   "dependencies": {
     "-": "^0.0.1",
+    "axios": "^1.8.4",
     "body-parser": "^2.2.0",
+    "bootstrap": "^5.3.5",
     "cors": "^2.8.5",
     "D": "^1.0.0",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
-    "mongodb": "^6.15.0"
+    "mongodb": "^6.15.0",
+    "vue-toastification": "^1.7.14"
   },
   "devDependencies": {
-    "nodemon": "^3.1.9"
-  }
+    "nodemon": "^3.1.9",
+    "sass": "~1.32.0",
+    "sass-loader": "^10.0.0",
+    "vue-cli-plugin-vuetify": "~2.5.8",
+    "vuetify-loader": "^1.7.0"
+  },
+  "license": "MIT"
 }

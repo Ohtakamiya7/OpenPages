@@ -1,0 +1,264 @@
+body{
+  margin: 0; 
+  padding: 0; 
+}
+:root {
+  font-family: 'Patrick Hand', cursive;
+  --font-heading: 'Didot', serif; 
+
+  line-height: 1.5;
+  font-weight: 400;
+  margin: 0;
+  padding: 0;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.header{
+  background-color: #483B30;
+  color:#F2D7B9; 
+  width: 100%; 
+}
+
+.title{
+  text-align: left;
+  margin-left: 20px;
+  font-size: xxx-large;
+  font-weight: 600;
+  justify-content: center;
+  font-family: var(--font-heading);
+  padding: 20px;
+}
+
+.form-row {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  width: 100%;
+  margin-bottom: 30px;          
+}
+
+.space{
+  gap: 20px;
+}
+
+.radio-row{
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 1rem;
+}
+
+.view-prompt{
+  text-align: center; 
+  margin-top: 2rem;
+  margin-bottom: 5px; 
+}
+
+.view h5 { 
+  font-family: inherit;
+  font-size: 1.25rem;
+  line-height: 2.05rem;
+  margin-bottom: 2.15rem; 
+}
+
+.view h5 strong{
+  font-weight:700; 
+  font-synthesis: weight;
+}
+
+.edit{
+  background-color: lightgrey;
+}
+
+.form-label {
+  font-size: 1.25rem;     /* roughly equivalent to <h5> */
+  font-weight: 500;
+  margin: 0;
+  align-self: baseline; /* top‑align the label in the row */
+}
+
+/* Let the field fill absolutely all the space left over */
+.form-row > input,
+.form-row > textarea {
+  flex: 1 1 0;           /* grow & shrink from a zero basis */
+  min-width: 0;          /* allow shrinking below its content size */
+  width: 100%;           /* ensure it really fills its flex cell */
+  background: transparent;
+  border: none;
+  outline: none;
+  font-family: inherit;
+  font-size: 1rem;
+  line-height: 2rem;
+  padding: 0.25em 0.5em;
+  font-size: 1rem;
+}
+.form-title{
+  text-align: left;
+  margin-bottom: 20px; 
+}
+
+.form-prompt{
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+.prompt{
+  background-color: #f8f9fa;
+  text-align: center; 
+  font-size: xx-large;
+  font-weight: 500; 
+  padding: 1rem 0; 
+  margin-bottom: 40px;
+  margin-top: 15px; 
+  font-family: var(--font-heading);
+
+}
+
+.instruction{
+  text-align: center;
+  font-family: var(--font-heading);
+  margin-bottom: 30px;
+}
+
+.border{
+  border-radius: 3px;
+  border-color: #747bff;
+}
+
+.post-button{
+  margin-bottom: 20px;
+  font-family: var(--font-heading);
+
+}
+
+/* close “✕” button */
+.close-btn {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  border: none;
+  background: transparent;
+  font-size: 1.25rem;
+  cursor: pointer;
+}
+
+
+.bottom-right{
+  position: absolute;
+  bottom: 1rem;         
+  right: 1rem;           
+  display: flex;
+  gap: 2rem; 
+}
+
+.delete{
+  background-color: red;
+}
+
+.close{
+  background-color: lightblue;
+}
+
+.journal-cover {
+  width: 25%auto;       /* fixed width */
+  height: 400px;      /* fixed height (optional) */
+  overflow: hidden;   /* if the text is too long it will scroll or you can truncate */
+  background: #705F52;/* e.g. a notebook‐cover color */
+  color: white;
+  border-width: 3px;
+  border-radius: 4px;
+  justify-content: center;
+  text-align: center;
+  position: relative; 
+  margin-left: 25px;
+}
+
+.journal-cover::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 25px;                /* tweak thickness */
+  background: #A28F81;
+  z-index: 1;
+}
+
+.journal-title {
+  position: absolute;        /* takes it out of normal flow */
+  top: 50%;
+  left: 50%;
+  transform: translate(-43%, -175%);
+  background: white;
+  color: black;            /* match your cover or pick any */
+  padding: 0.5rem 1rem;      /* space around the text */
+  z-index: 2;                /* above the stripe */
+  white-space: nowrap;  
+  border-radius: 2px; 
+  font-family: var(--font-heading);
+}
+
+form input,
+form textarea {
+  background-color: transparent;  /* no white box behind them */
+  border: none;                   /* remove all borders */
+  outline: none;                  /* remove focus ring (you can add a custom one if you like) */
+  padding: 0.5em;                 /* or whatever spacing you prefer */
+}
+
+/* if you want a subtle underline instead of the full box */
+form input {
+  border-bottom: 1px solid rgba(0,0,0,0.2);
+}
+form textarea {
+  border-bottom: 1px solid rgba(0,0,0,0.2);
+}
+
+/* placeholder text still shows up */
+form input::placeholder,
+form textarea::placeholder {
+  color: rgba(0, 0, 0, 0.4);
+}
+
+body {
+  font-family: 'Patrick Hand', cursive;
+}
+
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #1a1a1a;
+}
+
+button:hover {
+  border-color: black;
+}
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+  a:hover {
+    color: #747bff;
+  }
+  button {
+    background-color: #f9f9f9;
+  }
+}
