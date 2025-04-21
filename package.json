@@ -4,8 +4,8 @@
   "description": "Full stack vue and express app ",
   "author": "Ohta Kamiya",
   "scripts": {
-    "dev": "nodemon server/index.js",
-    "start": "node server/index.js", 
+    "dev": "nodemon backend/server.js",
+    "start": "node backend/server.js", 
     "heroku-postbuild":"cd frontend && npm install && npm run build"
   },
   "main": "index.js",
