@@ -22,7 +22,7 @@
             :key="selectedEntry._id" 
             :initialEntry="selectedEntry"
             @submitted="saveEdit"
-            @cancel="isEditing = false"
+            @cancelled="closeView"
           />
         </div>
       </div>
@@ -45,7 +45,7 @@ import { defineProps, defineEmits, ref } from "vue";
 
 const showView = ref(false);
 const selectedEntry = ref("");
-const emit = defineEmits(["refresh"]);
+const emit = defineEmits(["refresh", "cancelled"]);
 const isEditing = ref(false);
 
 const props = defineProps({
@@ -99,6 +99,7 @@ async function saveEdit(editedPayload) {
 
 function closeView() {
   showView.value = false;
+  emit("cancelled"); 
 }
 
 function openView(entry) {
