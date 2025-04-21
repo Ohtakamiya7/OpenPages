@@ -22,7 +22,7 @@
         @click.self="closeDrawer"
       >
         <div class="drawer">
-          <EntryForm @submitted="handleSubmitted" @cancelled = "closeDrawer" />
+          <EntryForm :topicOrder = "topicOrder" @submitted="handleSubmitted" @cancelled = "closeDrawer" />
         </div>
       </div>
     </transition>

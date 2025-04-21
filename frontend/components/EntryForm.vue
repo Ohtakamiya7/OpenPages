@@ -73,6 +73,12 @@ const props = defineProps({
       win: "",
       mood: "",
     }),
+
+    topicOrder: {
+      type: Number, 
+      required: true
+
+    }
   },
 });
 const emit = defineEmits(["submitted", "cancelled"]);
