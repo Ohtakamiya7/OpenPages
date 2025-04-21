@@ -121,6 +121,8 @@ async function submitEntry() {
   const method  = props.initialEntry._id ? 'PUT' : 'POST';
   const url     = `/api/entries/${props.topicOrder}`;
 
+  console.log("POSTing entry to", `/api/entries/${props.topicOrder}`, payload);
+
   const res = await fetch(url, {  
     method,
     headers: { 'Content-Type': 'application/json' },
