@@ -136,7 +136,7 @@ body{
   margin-bottom: 10px;
   margin-top: 15px; 
   font-family: var(--font-heading);
-
+  width: 60%; 
 }
 
 .instruction{

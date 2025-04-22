@@ -12,7 +12,7 @@
         ←
       </button>
 
-      <div class="prompt w-75 border text-center p-3">
+      <div class="prompt border text-center p-3">
         <h4>{{ currentDate ? currentDate.toLocaleDateString() : "…" }} Prompt </h4>
 
         <h3>{{prompt}}</h3>
