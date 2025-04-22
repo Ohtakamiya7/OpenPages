@@ -54,7 +54,7 @@
     <div class="bottom-right">
       <button
         type="button"
-        @click="closeDrawer"
+        @click="onCancel"
         style="background-color: lightblue"
         class="btn btn-lg"
       >

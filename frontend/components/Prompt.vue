@@ -1,35 +1,71 @@
 <template>
   <div class="container-fluid p-0">
-    <div class="header"><h1 class = "title">OpenPages</h1></div>
+    <div class="header"><h1 class="title">OpenPages</h1></div>
 
-    <div class="d-flex justify-content-center">
-      <div class="prompt w-75 border">Today's Prompt: {{ prompt }}</div>
-    </div>
+    <!-- Pager + Prompt -->
+    <div class="d-flex justify-content-center align-items-center my-3">
+      <button
+        class="btn btn-link arrow-btn me-2"
+        @click="goBack"
+        :disabled="currentOrder <= 1"
+      >
+        ←
+      </button>
 
-    <div class="justify-content-center d-flex post-button">
-      <button style="background-color: #F2D7B9" @click="showDrawer = true">
-        <i class="fas fa-plus"></i> Write Your Journal Entry!
+      <div class="prompt w-75 border text-center p-3">
+        <h4>{{ currentDate ? currentDate.toLocaleDateString() : "…" }} Prompt </h4>
+
+        <h3>{{prompt}}</h3>
+      </div>
+
+      <button
+        class="btn btn-link arrow-btn ms-2"
+        @click="goForward"
+        :disabled="currentOrder >= maxOrder"
+      >
+        →
       </button>
     </div>
 
-    <h6 class="instruction">Click on a journal to view its entries.</h6>
+    <!-- Only on the “today” page can you write new entries -->
+    <div v-if="currentOrder === maxOrder" class="text-center mb-3">
+      <button
+        class="post-button"
+        @click="showDrawer = true"
+        style="background-color: rgb(242, 215, 185)"
+      >
+        + Write Your Journal Entry!
+      </button>
+    </div>
 
+    <h6 class="instruction text-center">
+      Click on a journal to view its entries.
+    </h6>
+
+    <div class="row gx-4 gy-2">
+      <EntryList
+        :entries="entriesArray"
+        :topicOrder="currentOrder"
+        @refresh="() => loadTopic(currentOrder)"
+      />
+    </div>
+
+    <!-- EntryForm drawer -->
     <transition name="slide">
-      <!-- backdrop + drawer panel -->
       <div
         v-if="showDrawer"
-        class="drawer-backdrop d-flex justify-content-center"
+        class="drawer-backdrop justify-content-center"
         @click.self="closeDrawer"
       >
         <div class="drawer">
-          <EntryForm :topicOrder = "topicOrder" @submitted="handleSubmitted" @cancelled = "closeDrawer" />
+          <EntryForm
+            :topicOrder="currentOrder"
+            @submitted="handleSubmitted"
+            @cancelled="closeDrawer"
+          />
         </div>
       </div>
     </transition>
-
-    <div class="row gx-4 gy-2">
-      <EntryList :entries="entriesArray" :topicOrder = "topicOrder" @refresh="load" @cancelled = "closeDrawer"/>
-    </div>
   </div>
 </template>
 
@@ -39,36 +75,67 @@ import EntryForm from "./EntryForm.vue";
 import EntryList from "./EntryList.vue";
 
 const prompt = ref("");
-const showDrawer = ref(false);
-const today = ref(new Date().toLocaleDateString());
-const topicOrder = ref("");
 const entriesArray = ref([]);
+const maxOrder = ref(0); // “today”’s topic order
+const currentOrder = ref(0); // what page we’re viewing
+const showDrawer = ref(false);
+const currentDate = ref(null);
+// Fetch prompt + entries by numeric order
+async function loadTopic(order) {
+  try {
+    // 1) Prompt
+    const tRes = await fetch(`/api/topics/${order}`);
+    if (!tRes.ok) throw new Error(`topics/${order} → ${tRes.status}`);
+    const { prompt: p, date: d } = await tRes.json();
+    prompt.value = p;
+    currentDate.value = new Date(d); // ← parse it
 
-function handleSubmitted() {
-  showDrawer.value = false;
-  load();
+    // 2) Entries
+    const eRes = await fetch(`/api/entries/${order}`);
+    if (!eRes.ok) throw new Error(`entries/${order} → ${eRes.status}`);
+    entriesArray.value = await eRes.json();
+  } catch (err) {
+    console.error("loadTopic failed:", err);
+    prompt.value = "[no prompt]";
+    entriesArray.value = [];
+  }
 }
 
+// ← one day, never below 1
+function goBack() {
+  if (currentOrder.value > 1) {
+    currentOrder.value--;
+    loadTopic(currentOrder.value);
+  }
+}
+
+// → one day, never past “today”
+function goForward() {
+  if (currentOrder.value < maxOrder.value) {
+    currentOrder.value++;
+    loadTopic(currentOrder.value);
+  }
+}
+
+// On mount: get today’s topic order, then load it
+onMounted(async () => {
+  const today = await fetch("/api/topics/today").then((r) => r.json());
+  maxOrder.value = today.order;
+  currentOrder.value = today.order;
+  currentDate.value = new Date(today.date); // ← don’t forget this
+  await loadTopic(today.order);
+});
+
+// After creating/editing an entry, reload this page
+function handleSubmitted() {
+  showDrawer.value = false;
+  loadTopic(currentOrder.value);
+}
+
+// Close the entry‐form drawer
 function closeDrawer() {
   showDrawer.value = false;
 }
-
-async function load() {
-  const res = await fetch("/api/topics/today");
-  const data = await res.json();
-  prompt.value = data.prompt;
-  topicOrder.value = data.order;
-
-  const res2 = await fetch(
-    `/api/entries/${topicOrder.value}`
-  );
-  entriesArray.value = await res2.json();
-
-}
-
-onMounted(async () => {
-  load();
-});
 </script>
 
 <style scoped>
@@ -100,7 +167,7 @@ onMounted(async () => {
   background-position: 0 6rem;
   background-repeat: no-repeat;
 
-  padding-left: 7rem; 
+  padding-left: 7rem;
 }
 
 .drawer::before {
@@ -108,8 +175,8 @@ onMounted(async () => {
   position: absolute;
   top: 0;
   bottom: 0;
-  left: 6rem;            
-  width: 2px;            
+  left: 6rem;
+  width: 2px;
   background-color: #e74c3c;
   pointer-events: none;
 }

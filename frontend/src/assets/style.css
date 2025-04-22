@@ -27,6 +27,23 @@ body{
   width: 100%; 
 }
 
+.arrow-btn{
+  color: #000; 
+  font-size: x-large;
+}
+.btn-link.arrow-btn:focus,
+.btn-link.arrow-btn:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* if it’s still getting a gray background on focus/active: */
+.btn-link.arrow-btn:focus,
+.btn-link.arrow-btn:active {
+  background-color: transparent !important;
+}
+
+
 .title{
   text-align: left;
   margin-left: 20px;
@@ -116,7 +133,7 @@ body{
   font-size: xx-large;
   font-weight: 500; 
   padding: 1rem 0; 
-  margin-bottom: 40px;
+  margin-bottom: 10px;
   margin-top: 15px; 
   font-family: var(--font-heading);
 
@@ -134,9 +151,8 @@ body{
 }
 
 .post-button{
-  margin-bottom: 20px;
+  margin-bottom: 5px;
   font-family: var(--font-heading);
-
 }
 
 /* close “✕” button */
@@ -242,9 +258,7 @@ button {
   background-color: #1a1a1a;
 }
 
-button:hover {
-  border-color: black;
-}
+
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
