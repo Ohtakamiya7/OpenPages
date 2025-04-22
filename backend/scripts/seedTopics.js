@@ -4,6 +4,9 @@ import Topic from '../models/Topic.js'
 
 dotenv.config()
 
+const EPOCH = new Date(2025, 2, 31);  // Jan 1 2025, local time
+const MS_PER_DAY = 24*60*60*1000;
+
 // 30 prompts that the users will respond to 
 const prompts = [
   "What are you grateful for today?",
@@ -35,27 +38,27 @@ const prompts = [
   "What’s one piece of advice you’d give your younger self?",
   "If you could be a character in any movie, show, or book, who would you want to be? ",
   "What does happiness feel like to you?",
-  "If you could enter an alternate reality set in a movie or show, what movie or show's world would you want to be in? "
+  "If you could enter an alternate reality set in a movie or show, what movie or show's world would you want to be in? ", 
+  
 
 ]
 
-// seeds the topics we have 
 async function seed() {
-  await mongoose.connect(process.env.MONGO_URI)
+  await mongoose.connect(process.env.MONGO_URI);
 
-  const topics = prompts.map((prompt, i) => ({
-    order: i,
-    prompt
-  }))
+  // Wipe old topics
+  await Topic.deleteMany({});
 
-  // Replace existing
-  await Topic.deleteMany({})
-  await Topic.insertMany(topics)
-  console.log('Seeded', topics.length, 'topics')
-  process.exit()
+  // Insert with dates
+  const docs = prompts.map((text, idx) => ({
+    order:  idx,
+    prompt: text,
+    date:   new Date(EPOCH.getTime() + idx * MS_PER_DAY)
+  }));
+
+  await Topic.insertMany(docs);
+  console.log(`Seeded ${docs.length} topics.`);
+  process.exit();
 }
 
-seed().catch(err => {
-  console.error(err)
-  process.exit(1)
-})
+seed().catch(console.error);

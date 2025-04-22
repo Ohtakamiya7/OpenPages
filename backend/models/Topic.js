@@ -6,12 +6,17 @@ const topicSchema = new mongoose.Schema({
     required: true,
     unique: true,    // 0 through 29
     min: 0,
-    max: 29
+    max: 29, 
   },
   prompt: {
     type: String, // the prompt for today the users will respond to
     required: true
-  }
+  }, 
+  date:   {
+     type: Date,   
+    required: true
+  }   // new!
+
 })
 
 export default mongoose.model('Topic', topicSchema)

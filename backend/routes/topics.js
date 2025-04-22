@@ -33,4 +33,19 @@ router.get('/', async (req, res) => {
   }
 })
 
+// topics.js (Express router)
+
+router.get("/:order", async (req, res) => {
+  const order = Number(req.params.order)
+  try {
+    const topic = await Topic.findOne({ order })      // or however you store it
+    if (!topic) return res.status(404).json({ error: "Topic not found" })
+    res.json({ prompt: topic.prompt, order: topic.order, date: topic.date})
+  } catch (err) {
+    console.error(err)
+    res.status(500).json({ error: "Server error" })
+  }
+})
+
+
 export default router
