@@ -49,10 +49,12 @@
       >
     </div>
 
+    <p v-if="error" class="text-danger">{{ error }}</p>
+
     <div class="bottom-right">
       <button
         type="button"
-        @click="onCancel"
+        @click="closeDrawer"
         style="background-color: lightblue"
         class="btn btn-lg"
       >
@@ -93,6 +95,7 @@ const grateful = ref(props.initialEntry.grateful);
 const win = ref(props.initialEntry.win);
 const mood = ref(props.initialEntry.mood);
 const prompt = ref("");
+const error = ref("");
 const today = ref(new Date().toLocaleDateString());
 
 watch(
@@ -121,32 +124,43 @@ function onCancel() {
   emit("cancelled");
 }
 
-async function submitEntry() {
-  const payload = {
-    author: author.value,
-    text: entryText.value,
-    grateful: grateful.value,
-    win: win.value,
-    mood: mood.value,
-  };
-  const method = props.initialEntry._id ? "PUT" : "POST";
-  const url = `/api/entries/${props.topicOrder}`;
-
-  console.log("POSTing entry to", `/api/entries/${props.topicOrder}`, payload);
-
-  const res = await fetch(url, {
-    method,
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(
-      method === "PUT" ? { ...payload, id: props.initialEntry._id } : payload
-    ),
-  });
-
-  if (!res.ok) {
-    const err = await res.json();
-    throw new Error(err.error || res.statusText);
-  }
-  const saved = await res.json();
-  emit("submitted", saved);
+function closeDrawer(){
+  emit("drawerClose")
 }
+
+async function submitEntry() {
+  // 1) Client‑side validation
+  if (!author.value || !entryText.value || !grateful.value || !win.value || !mood.value) {
+    error.value = "Please fill out all fields before submitting.";
+    return;
+  }
+
+  try {
+    const payload = { author: author.value, text: entryText.value, grateful: grateful.value, win: win.value, mood: mood.value };
+    const method = props.initialEntry._id ? "PUT" : "POST";
+    const url = `/api/entries/${props.topicOrder}`;
+
+    const res = await fetch(url, {
+      method,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(method === "PUT" ? { ...payload, id: props.initialEntry._id } : payload)
+    });
+
+    // 2) Server‑side error?
+    if (!res.ok) {
+      const body = await res.json();
+      error.value = body.error || res.statusText;
+      return;
+    }
+
+    // 3) Success path
+    const saved = await res.json();
+    emit("submitted", saved);
+
+  } catch (networkErr) {
+    // 4) Network or unexpected error
+    error.value = "Network error—please try again.";
+  }
+}
+
 </script>

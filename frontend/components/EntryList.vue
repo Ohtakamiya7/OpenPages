@@ -21,6 +21,7 @@
             v-else
             :key="selectedEntry._id" 
             :initialEntry="selectedEntry"
+            :topicOrder = "props.topicOrder"
             @submitted="saveEdit"
             @cancelled="closeView"
           />
@@ -99,7 +100,6 @@ async function saveEdit(editedPayload) {
 
 function closeView() {
   showView.value = false;
-  emit("cancelled"); 
 }
 
 function openView(entry) {
