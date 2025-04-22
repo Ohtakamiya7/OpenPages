@@ -30,7 +30,7 @@
     </transition>
 
     <div v-for="entry in entries" :key="entry._id" class="col-md-3 mb-4">
-      <div class="card journal-cover" @click="openView(entry)">
+      <div class="card journal-cover justify-content-center" @click="openView(entry)">
         <h3 class="journal-title">{{ entry.author }}'s Journal</h3>
       </div>
     </div>

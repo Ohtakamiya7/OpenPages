@@ -216,9 +216,7 @@ body{
   background: white;
   color: black;            /* match your cover or pick any */
   padding: 0.5rem 1rem;      /* space around the text */
-  z-index: 2;                /* above the stripe */
-  white-space: nowrap;  
-  border-radius: 2px; 
+  z-index: 2;                /* above the stripe */ 
   font-family: var(--font-heading);
 }
 
