@@ -4,8 +4,9 @@ import Topic from '../models/Topic.js'
 
 dotenv.config()
 
-const EPOCH = new Date(2025, 2, 31);  // Jan 1 2025, local time
-const MS_PER_DAY = 24*60*60*1000;
+// ✅ Jan is month 0 (not 4 → May!)
+const EPOCH = new Date(2025, 0, 1)  // Jan 1, 2025 local time
+const MS_PER_DAY = 24 * 60 * 60 * 1000
 
 // 30 prompts that the users will respond to 
 const prompts = [
@@ -19,7 +20,7 @@ const prompts = [
   "Write about a time that frustrated you recently, and express how that made you feel.  ",
   "What’s a goal you achieved recently?",
   "Describe a time you felt truly at peace",
-  "What does self‑care look like for you?",
+  "What does self-care look like for you?",
   "What inspired you this week? ",
   "Write about a fear you want to conquer ",
   "What is a skill you’re proud of developing? ",
@@ -39,26 +40,24 @@ const prompts = [
   "If you could be a character in any movie, show, or book, who would you want to be? ",
   "What does happiness feel like to you?",
   "If you could enter an alternate reality set in a movie or show, what movie or show's world would you want to be in? ", 
-  
-
 ]
 
 async function seed() {
-  await mongoose.connect(process.env.MONGO_URI);
+  await mongoose.connect(process.env.MONGO_URI)
 
   // Wipe old topics
-  await Topic.deleteMany({});
+  await Topic.deleteMany({})
 
-  // Insert with dates
+  // ✅ Use 1-based order to match UI
   const docs = prompts.map((text, idx) => ({
-    order:  idx,
+    order: idx + 1, 
     prompt: text,
-    date:   new Date(EPOCH.getTime() + idx * MS_PER_DAY)
-  }));
+    date: new Date(EPOCH.getTime() + idx * MS_PER_DAY)
+  }))
 
-  await Topic.insertMany(docs);
-  console.log(`Seeded ${docs.length} topics.`);
-  process.exit();
+  await Topic.insertMany(docs)
+  console.log(`Seeded ${docs.length} topics.`)
+  process.exit()
 }
 
-seed().catch(console.error);
+seed().catch(console.error)
