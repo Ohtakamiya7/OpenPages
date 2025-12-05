@@ -12,8 +12,8 @@ body{
   padding: 0;
 
   color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  color: #213547;
+  background-color: #ffffff;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -116,6 +116,7 @@ body{
   line-height: 2rem;
   padding: 0.25em 0.5em;
   font-size: 1rem;
+  color: black;
 }
 .form-title{
   text-align: left;
@@ -153,6 +154,7 @@ body{
 .post-button{
   margin-bottom: 5px;
   font-family: var(--font-heading);
+  color: black;
 }
 
 /* close “✕” button */
@@ -226,6 +228,7 @@ form textarea {
   border: none;                   /* remove all borders */
   outline: none;                  /* remove focus ring (you can add a custom one if you like) */
   padding: 0.5em;                 /* or whatever spacing you prefer */
+  color: black;
 }
 
 /* if you want a subtle underline instead of the full box */
